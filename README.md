@@ -77,13 +77,12 @@ If should use solution template as a starting point in your softwared design pro
 
 # Protocol
 You are responsible for the following:
-- Attending stand up meetings that held by Slack bot - Standup Alice (in English). Twice a week.
 - Commit and Push changes to your repository at least twice a week (please see [workflow](docs/workflow.md) page).
 
 # Communication
-- Our primary communication tool is Slack (epam-training.slack.com). 
-- We are using English language to chat in GitHub and for stand ups in Slack.
-- We are using Russian language at lectures and in other Slack channels.
+- Our primary communication tool is Ms Teams (epam-training.slack.com). 
+- We are using English language to chat in GitHub.
+- We are using Russian language at lectures and in other Ms Teams channels.
 
 # FAQ
 > :question: I can't attend the lecture today, what can I do?
