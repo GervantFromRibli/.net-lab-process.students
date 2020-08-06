@@ -28,12 +28,9 @@
     * Task 3
 
 ## IV. Web Services 
-* WCF fundamentals – server;
-* WCF fundamentals – client;
-    * Task 4
-* WCF Authentication & Authorization
 * REST; Web API
 * .NET Core 
+   * Task 4
 * .NET Core CLI; 
     * Task 5
 
