@@ -60,8 +60,8 @@ If should use solution template as a starting point in your softwared design pro
 # Software used in lab
 * Visual Studio 2019 Community [downloads](https://visualstudio.microsoft.com/downloads/).
 * We are using [NUnit](https://nunit.org/) test runner.
-* MSSQL Server 2017 express [download](https://www.microsoft.com/en-us/download/details.aspx?id=55994).
-* SQL Server Management Studio [download](https://docs.microsoft.com/en-us/sql/ssms/download-sql-server-management-studio-ssms?view=sql-server-2017).
+* MSSQL Server 2019 express [download](https://go.microsoft.com/fwlink/?linkid=866662).
+* SQL Server Management Studio [download](https://aka.ms/ssmsfullsetup).
 * .NET CORE [download](https://www.microsoft.com/net/download).
 * .NET Framework 4.7.2 [download](https://www.microsoft.com/net/download/dotnet-framework-runtime).
 * Git [download](https://git-scm.com/download/win).
@@ -71,7 +71,7 @@ If should use solution template as a starting point in your softwared design pro
     * Octopus Tentacle
     * TeamCity Plugin
     * Command Line
-* Slack [download](https://slack.com/downloads/windows).
+* MS Teams [download](https://www.microsoft.com/en-in/microsoft-365/microsoft-teams/download-app).
 
 **Please install these software using English language**
 
