@@ -1,1 +1,0 @@
-# Testing in .NET sample
