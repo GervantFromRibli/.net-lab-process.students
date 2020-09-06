@@ -8,11 +8,6 @@ namespace DomainEntities
 {
     public class EventSeat
     {
-        public int Id { get; set; }
-        public int EventAreaId { get; set; }
-        public int Row { get; set; }
-        public int Number { get; set; }
-        public int State { get; set; }
         public EventSeat(int id, int eventAreaId, int row, int number, int state)
         {
             Id = id;
@@ -21,5 +16,15 @@ namespace DomainEntities
             Number = number;
             State = state;
         }
+
+        public int Id { get; set; }
+
+        public int EventAreaId { get; set; }
+
+        public int Row { get; set; }
+
+        public int Number { get; set; }
+
+        public int State { get; set; }
     }
 }

@@ -8,10 +8,6 @@ namespace DomainEntities
 {
     public class Venue
     {
-        public int Id { get; set; }
-        public string Description { get; set; }
-        public string Address { get; set; }
-        public int? Phone { get; set; }
         public Venue(int id, string description, string address)
         {
             Id = id;
@@ -19,6 +15,7 @@ namespace DomainEntities
             Address = address;
             Phone = null;
         }
+
         public Venue(int id, string description, string address, int phone)
         {
             Id = id;
@@ -26,5 +23,13 @@ namespace DomainEntities
             Address = address;
             Phone = phone;
         }
+
+        public int Id { get; set; }
+
+        public string Description { get; set; }
+
+        public string Address { get; set; }
+
+        public int? Phone { get; set; }
     }
 }

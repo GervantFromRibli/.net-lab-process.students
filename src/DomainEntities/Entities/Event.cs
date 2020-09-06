@@ -8,10 +8,6 @@ namespace DomainEntities
 {
     public class Event
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public int LayoutId { get; set; }
         public Event(int id, string name, string description, int layoutId)
         {
             Id = id;
@@ -19,5 +15,13 @@ namespace DomainEntities
             Description = description;
             LayoutId = layoutId;
         }
+
+        public int Id { get; set; }
+
+        public string Name { get; set; }
+
+        public string Description { get; set; }
+
+        public int LayoutId { get; set; }
     }
 }

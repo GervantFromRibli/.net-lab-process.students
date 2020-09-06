@@ -9,12 +9,6 @@ namespace DomainEntities
 {
     public class EventArea
     {
-        public int Id { get; set; }
-        public int EventId { get; set; }
-        public string Description { get; set; }
-        public int CoordX { get; set; }
-        public int CoordY { get; set; }
-        public decimal Price { get; set; }
         public EventArea(int id, int eventId, string description, int coordX, int coordY, decimal price)
         {
             Id = id;
@@ -24,5 +18,17 @@ namespace DomainEntities
             CoordY = coordY;
             Price = price;
         }
+
+        public int Id { get; set; }
+
+        public int EventId { get; set; }
+
+        public string Description { get; set; }
+
+        public int CoordX { get; set; }
+
+        public int CoordY { get; set; }
+
+        public decimal Price { get; set; }
     }
 }

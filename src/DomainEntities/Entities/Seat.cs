@@ -8,10 +8,6 @@ namespace DomainEntities
 {
     public class Seat
     {
-        public int Id { get; set; }
-        public int AreaId { get; set; }
-        public int Row { get; set; }
-        public int Number { get; set; }
         public Seat(int id, int areaId, int row, int number)
         {
             Id = id;
@@ -19,5 +15,13 @@ namespace DomainEntities
             Row = row;
             Number = number;
         }
+
+        public int Id { get; set; }
+
+        public int AreaId { get; set; }
+
+        public int Row { get; set; }
+
+        public int Number { get; set; }
     }
 }
