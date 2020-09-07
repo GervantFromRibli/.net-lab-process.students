@@ -7,19 +7,19 @@ using System.Threading.Tasks;
 
 namespace DataAccessLayer
 {
-    public interface IRepository<T>
+    public interface IRepository<T> : IDisposable
         where T : class
     {
         void Create(T item);
 
         T FindById(int id);
 
-        IEnumerable<T> Get();
-
-        IEnumerable<T> Get(Func<T, bool> predicate);
+        List<T> GetAll();
 
         void Remove(T item);
 
         void Update(T item);
+
+        void SaveChanges();
     }
 }

@@ -16,7 +16,7 @@ namespace DomainEntities
             Phone = null;
         }
 
-        public Venue(int id, string description, string address, int phone)
+        public Venue(int id, string description, string address, string phone)
         {
             Id = id;
             Description = description;
@@ -30,6 +30,6 @@ namespace DomainEntities
 
         public string Address { get; set; }
 
-        public int? Phone { get; set; }
+        public string Phone { get; set; }
     }
 }

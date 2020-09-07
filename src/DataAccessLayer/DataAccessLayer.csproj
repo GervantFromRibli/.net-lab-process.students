@@ -44,6 +44,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AreaRepository.cs" />
+    <Compile Include="VenueRepository.cs" />
+    <Compile Include="SeatRepository.cs" />
+    <Compile Include="LayoutRepository.cs" />
+    <Compile Include="EventSeatRepository.cs" />
+    <Compile Include="EventAreaRepository.cs" />
+    <Compile Include="EventRepository.cs" />
     <Compile Include="IRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -53,6 +60,12 @@
   <ItemGroup>
     <Analyzer Include="..\..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
     <Analyzer Include="..\..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DomainEntities\DomainEntities.csproj">
+      <Project>{26aa4eb4-bbc8-4c0d-b341-60b023e72c6a}</Project>
+      <Name>DomainEntities</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
