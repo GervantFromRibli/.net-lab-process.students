@@ -8,12 +8,14 @@ namespace DomainEntities
 {
     public class Event
     {
-        public Event(int id, string name, string description, int layoutId)
+        public Event(int id, string name, string description, int layoutId, DateTime startDate, DateTime endDate)
         {
             Id = id;
             Name = name;
             Description = description;
             LayoutId = layoutId;
+            StartDate = startDate;
+            EndDate = endDate;
         }
 
         public int Id { get; set; }
@@ -23,5 +25,9 @@ namespace DomainEntities
         public string Description { get; set; }
 
         public int LayoutId { get; set; }
+
+        public DateTime StartDate { get; set; }
+
+        public DateTime EndDate { get; set; }
     }
 }

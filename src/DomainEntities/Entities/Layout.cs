@@ -8,14 +8,20 @@ namespace DomainEntities
 {
     public class Layout
     {
-        public int Id { get; set; }
-        public int VenueId { get; set; }
-        public string Description { get; set; }
-        public Layout(int id, int venueId, string description)
+        public Layout(int id, string name, int venueId, string description)
         {
             Id = id;
+            Name = name;
             VenueId = venueId;
             Description = description;
         }
+
+        public int Id { get; set; }
+
+        public string Name { get; set; }
+
+        public int VenueId { get; set; }
+
+        public string Description { get; set; }
     }
 }
