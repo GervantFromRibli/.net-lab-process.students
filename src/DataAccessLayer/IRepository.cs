@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DataAccessLayer
 {
-    public interface IRepository<T> : IDisposable
+    public interface IRepository<T>
         where T : class
     {
         void Create(T item);
@@ -19,7 +19,5 @@ namespace DataAccessLayer
         void Remove(T item);
 
         void Update(T item);
-
-        void SaveChanges();
     }
 }

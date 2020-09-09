@@ -10,19 +10,19 @@ namespace BuisnessLayer
 {
     public class BLL
     {
-        private AreaRepository _areaRepository = new AreaRepository();
+        private AreaSqlRepository _areaRepository = new AreaSqlRepository();
 
-        private EventAreaRepository _eventAreaRepository = new EventAreaRepository();
+        private EventAreaSqlRepository _eventAreaRepository = new EventAreaSqlRepository();
 
-        private EventRepository _eventRepository = new EventRepository();
+        private EventSqlRepository _eventRepository = new EventSqlRepository();
 
-        private EventSeatRepository _eventSeatRepository = new EventSeatRepository();
+        private EventSeatSqlRepository _eventSeatRepository = new EventSeatSqlRepository();
 
-        private LayoutRepository _layoutRepository = new LayoutRepository();
+        private LayoutSqlRepository _layoutRepository = new LayoutSqlRepository();
 
-        private SeatRepository _seatRepository = new SeatRepository();
+        private SeatSqlRepository _seatRepository = new SeatSqlRepository();
 
-        private VenueRepository _venueRepository = new VenueRepository();
+        private VenueSqlRepository _venueRepository = new VenueSqlRepository();
 
         public void AddEvent(Event @event)
         {
