@@ -44,14 +44,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Repository\AreaSqlRepository.cs" />
-    <Compile Include="Repository\VenueSqlRepository.cs" />
-    <Compile Include="Repository\SeatSqlRepository.cs" />
-    <Compile Include="Repository\LayoutSqlRepository.cs" />
-    <Compile Include="Repository\EventSeatSqlRepository.cs" />
-    <Compile Include="Repository\EventAreaSqlRepository.cs" />
-    <Compile Include="Repository\EventSqlRepository.cs" />
-    <Compile Include="Repository\IRepository.cs" />
+    <Compile Include="Repositories\AreaSqlRepository.cs" />
+    <Compile Include="Repositories\VenueSqlRepository.cs" />
+    <Compile Include="Repositories\SeatSqlRepository.cs" />
+    <Compile Include="Repositories\LayoutSqlRepository.cs" />
+    <Compile Include="Repositories\EventSeatSqlRepository.cs" />
+    <Compile Include="Repositories\EventAreaSqlRepository.cs" />
+    <Compile Include="Repositories\EventSqlRepository.cs" />
+    <Compile Include="Repositories\IRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
