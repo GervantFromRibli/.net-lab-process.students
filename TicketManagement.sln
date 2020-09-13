@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuisnessLayer", "src\Buisne
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicketManagementTests", "src\TicketManagementTests\TicketManagementTests.csproj", "{49D7ADED-D65B-4ED3-A210-0D5C0C5C211A}"
 EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "TicketManagementDataBase", "src\TicketManagementDataBase\TicketManagementDataBase.sqlproj", "{EC3159C6-8592-42A6-A3DC-85E84F3F4A7A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,12 @@ Global
 		{49D7ADED-D65B-4ED3-A210-0D5C0C5C211A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{49D7ADED-D65B-4ED3-A210-0D5C0C5C211A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{49D7ADED-D65B-4ED3-A210-0D5C0C5C211A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC3159C6-8592-42A6-A3DC-85E84F3F4A7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC3159C6-8592-42A6-A3DC-85E84F3F4A7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC3159C6-8592-42A6-A3DC-85E84F3F4A7A}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{EC3159C6-8592-42A6-A3DC-85E84F3F4A7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC3159C6-8592-42A6-A3DC-85E84F3F4A7A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC3159C6-8592-42A6-A3DC-85E84F3F4A7A}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

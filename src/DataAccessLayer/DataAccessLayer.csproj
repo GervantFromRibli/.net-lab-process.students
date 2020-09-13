@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Repositories\AreaSqlRepository.cs" />
+    <Compile Include="Repositories\ISqlRepository.cs" />
     <Compile Include="Repositories\VenueSqlRepository.cs" />
     <Compile Include="Repositories\SeatSqlRepository.cs" />
     <Compile Include="Repositories\LayoutSqlRepository.cs" />

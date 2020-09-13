@@ -4,11 +4,12 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DataAccessLayer.Repositories;
 using DomainEntities;
 
 namespace DataAccessLayer
 {
-    public class EventAreaSqlRepository : IRepository<EventArea>
+    public class EventAreaSqlRepository : IRepository<EventArea>, ISqlRepository<EventArea>
     {
         private List<EventArea> _eventAreas;
 
@@ -28,7 +29,7 @@ namespace DataAccessLayer
 
         public bool IsFilledWithDbData { get; private set; } = false;
 
-        public virtual void FillRepository()
+        public virtual void FillRepositoryWithSqlData()
         {
             string command = $"SELECT * FROM [EventArea]";
             SqlCommand cmd = new SqlCommand(command);

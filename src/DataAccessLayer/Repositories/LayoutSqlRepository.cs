@@ -4,11 +4,12 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DataAccessLayer.Repositories;
 using DomainEntities;
 
 namespace DataAccessLayer
 {
-    public class LayoutSqlRepository : IRepository<Layout>
+    public class LayoutSqlRepository : IRepository<Layout>, ISqlRepository<Layout>
     {
         private List<Layout> _layouts;
 
@@ -28,7 +29,7 @@ namespace DataAccessLayer
 
         public bool IsFilledWithDbData { get; private set; } = false;
 
-        public virtual void FillRepository()
+        public virtual void FillRepositoryWithSqlData()
         {
             string command = $"SELECT * FROM [Layout]";
             SqlCommand cmd = new SqlCommand(command);

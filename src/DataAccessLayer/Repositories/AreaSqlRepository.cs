@@ -5,11 +5,12 @@ using System.Linq;
 using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 using System.Threading.Tasks;
+using DataAccessLayer.Repositories;
 using DomainEntities;
 
 namespace DataAccessLayer
 {
-    public class AreaSqlRepository : IRepository<Area>
+    public class AreaSqlRepository : IRepository<Area>, ISqlRepository<Area>
     {
         private List<Area> _areas;
 
