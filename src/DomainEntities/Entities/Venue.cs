@@ -8,9 +8,10 @@ namespace DomainEntities
 {
     public class Venue
     {
-        public Venue(int id, string description, string address)
+        public Venue(int id, string name, string description, string address)
         {
             Id = id;
+            Name = name;
             Description = description;
             Address = address;
             Phone = null;

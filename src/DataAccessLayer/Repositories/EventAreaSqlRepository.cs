@@ -16,19 +16,19 @@ namespace DataAccessLayer
         {
             ConnectionString = connection;
             _eventAreas = new List<EventArea>();
-            FillRepository();
         }
 
         public EventAreaSqlRepository()
         {
             ConnectionString = @"Data Source =.\SQLEXPRESS;Initial Catalog = TicketManagement; Integrated Security = true";
             _eventAreas = new List<EventArea>();
-            FillRepository();
         }
 
         public string ConnectionString { get; private set; }
 
-        private void FillRepository()
+        public bool IsFilledWithDbData { get; private set; } = false;
+
+        public virtual void FillRepository()
         {
             string command = $"SELECT * FROM [EventArea]";
             SqlCommand cmd = new SqlCommand(command);
@@ -44,14 +44,18 @@ namespace DataAccessLayer
 
             dbreader.Close();
             connection.Close();
+            IsFilledWithDbData = true;
         }
 
-        public void Create(EventArea item)
+        public virtual void Create(EventArea item)
         {
             if (item != null)
             {
                 _eventAreas.Add(item);
-                SaveChanges("Add", item);
+                if (IsFilledWithDbData == true)
+                {
+                    SaveChanges("Add", item);
+                }
             }
             else
             {
@@ -59,30 +63,26 @@ namespace DataAccessLayer
             }
         }
 
-        public EventArea FindById(int id)
+        public virtual EventArea FindById(int id)
         {
             return _eventAreas.Find(elem => elem.Id == id);
         }
 
-        public List<EventArea> GetAll()
+        public virtual List<EventArea> GetAll()
         {
             return _eventAreas;
         }
 
-        public void Remove(EventArea item)
+        public virtual void Remove(int id)
         {
-            if (item != null)
+            _eventAreas.Remove(FindById(id));
+            if (IsFilledWithDbData == true)
             {
-                _eventAreas.Remove(FindById(item.Id));
-                SaveChanges("Remove", item);
-            }
-            else
-            {
-                throw new ArgumentNullException(nameof(item));
+                SaveChanges("Remove", new EventArea(id, 0, "", 0, 0, 0));
             }
         }
 
-        public void Update(EventArea item)
+        public virtual void Update(EventArea item)
         {
             if (item != null)
             {
@@ -95,7 +95,10 @@ namespace DataAccessLayer
                     }
                 }
 
-                SaveChanges("Update", item);
+                if (IsFilledWithDbData == true)
+                {
+                    SaveChanges("Update", item);
+                }
             }
             else
             {
@@ -103,7 +106,7 @@ namespace DataAccessLayer
             }
         }
 
-        public void SaveChanges(string type, EventArea item)
+        public virtual void SaveChanges(string type, EventArea item)
         {
             switch (type)
             {

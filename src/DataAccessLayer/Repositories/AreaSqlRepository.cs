@@ -17,19 +17,19 @@ namespace DataAccessLayer
         {
             ConnectionString = connection;
             _areas = new List<Area>();
-            FillRepository();
         }
 
         public AreaSqlRepository()
         {
             ConnectionString = @"Data Source =.\SQLEXPRESS;Initial Catalog = TicketManagement; Integrated Security = true";
             _areas = new List<Area>();
-            FillRepository();
         }
 
         public string ConnectionString { get; private set; }
 
-        private void FillRepository()
+        public bool IsFilledWithDbData { get; private set; } = false;
+
+        public virtual void FillRepositoryWithSqlData()
         {
             string command = $"SELECT * FROM [Area]";
             SqlCommand cmd = new SqlCommand(command);
@@ -45,14 +45,18 @@ namespace DataAccessLayer
 
             dbreader.Close();
             connection.Close();
+            IsFilledWithDbData = true;
         }
 
-        public void Create(Area item)
+        public virtual void Create(Area item)
         {
             if (item != null)
             {
                 _areas.Add(item);
-                SaveChanges("Add", item);
+                if (IsFilledWithDbData == true)
+                {
+                    SaveChanges("Add", item);
+                }
             }
             else
             {
@@ -60,30 +64,26 @@ namespace DataAccessLayer
             }
         }
 
-        public Area FindById(int id)
+        public virtual Area FindById(int id)
         {
             return _areas.Find(elem => elem.Id == id);
         }
 
-        public List<Area> GetAll()
+        public virtual List<Area> GetAll()
         {
             return _areas;
         }
 
-        public void Remove(Area item)
+        public virtual void Remove(int id)
         {
-            if (item != null)
+            _areas.Remove(FindById(id));
+            if (IsFilledWithDbData == true)
             {
-                _areas.Remove(FindById(item.Id));
-                SaveChanges("Remove", item);
-            }
-            else
-            {
-                throw new ArgumentNullException(nameof(item));
+                SaveChanges("Remove", new Area(id, 0, "", 0, 0));
             }
         }
 
-        public void Update(Area item)
+        public virtual void Update(Area item)
         {
             if (item != null)
             {
@@ -96,7 +96,10 @@ namespace DataAccessLayer
                     }
                 }
 
-                SaveChanges("Update", item);
+                if (IsFilledWithDbData == true)
+                {
+                    SaveChanges("Update", item);
+                }
             }
             else
             {
@@ -104,7 +107,7 @@ namespace DataAccessLayer
             }
         }
 
-        public void SaveChanges(string type, Area item)
+        public virtual void SaveChanges(string type, Area item)
         {
             switch (type)
             {

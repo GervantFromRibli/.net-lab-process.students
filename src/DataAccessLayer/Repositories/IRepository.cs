@@ -17,7 +17,7 @@ namespace DataAccessLayer
 
         List<T> GetAll();
 
-        void Remove(T item);
+        void Remove(int id);
 
         void Update(T item);
 

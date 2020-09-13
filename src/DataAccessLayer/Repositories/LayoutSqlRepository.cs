@@ -16,19 +16,19 @@ namespace DataAccessLayer
         {
             ConnectionString = connection;
             _layouts = new List<Layout>();
-            FillRepository();
         }
 
         public LayoutSqlRepository()
         {
             ConnectionString = @"Data Source =.\SQLEXPRESS;Initial Catalog = TicketManagement; Integrated Security = true";
             _layouts = new List<Layout>();
-            FillRepository();
         }
 
         public string ConnectionString { get; private set; }
 
-        private void FillRepository()
+        public bool IsFilledWithDbData { get; private set; } = false;
+
+        public virtual void FillRepository()
         {
             string command = $"SELECT * FROM [Layout]";
             SqlCommand cmd = new SqlCommand(command);
@@ -44,14 +44,18 @@ namespace DataAccessLayer
 
             dbreader.Close();
             connection.Close();
+            IsFilledWithDbData = true;
         }
 
-        public void Create(Layout item)
+        public virtual void Create(Layout item)
         {
             if (item != null)
             {
                 _layouts.Add(item);
-                SaveChanges("Add", item);
+                if (IsFilledWithDbData == true)
+                {
+                    SaveChanges("Add", item);
+                }
             }
             else
             {
@@ -59,30 +63,26 @@ namespace DataAccessLayer
             }
         }
 
-        public Layout FindById(int id)
+        public virtual Layout FindById(int id)
         {
             return _layouts.Find(elem => elem.Id == id);
         }
 
-        public List<Layout> GetAll()
+        public virtual List<Layout> GetAll()
         {
             return _layouts;
         }
 
-        public void Remove(Layout item)
+        public virtual void Remove(int id)
         {
-            if (item != null)
+            _layouts.Remove(FindById(id));
+            if (IsFilledWithDbData == true)
             {
-                _layouts.Remove(FindById(item.Id));
-                SaveChanges("Remove", item);
-            }
-            else
-            {
-                throw new ArgumentNullException(nameof(item));
+                SaveChanges("Remove", new Layout(id, "", 0, ""));
             }
         }
 
-        public void Update(Layout item)
+        public virtual void Update(Layout item)
         {
             if (item != null)
             {
@@ -95,7 +95,10 @@ namespace DataAccessLayer
                     }
                 }
 
-                SaveChanges("Update", item);
+                if (IsFilledWithDbData == true)
+                {
+                    SaveChanges("Update", item);
+                }
             }
             else
             {
@@ -103,7 +106,7 @@ namespace DataAccessLayer
             }
         }
 
-        public void SaveChanges(string type, Layout item)
+        public virtual void SaveChanges(string type, Layout item)
         {
             switch (type)
             {

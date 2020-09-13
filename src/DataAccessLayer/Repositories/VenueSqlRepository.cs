@@ -16,19 +16,19 @@ namespace DataAccessLayer
         {
             ConnectionString = connection;
             _venues = new List<Venue>();
-            FillRepository();
         }
 
         public VenueSqlRepository()
         {
             ConnectionString = @"Data Source =.\SQLEXPRESS;Initial Catalog = TicketManagement; Integrated Security = true";
             _venues = new List<Venue>();
-            FillRepository();
         }
 
         public string ConnectionString { get; private set; }
 
-        private void FillRepository()
+        public bool IsFilledWithDbData { get; private set; } = false;
+
+        public virtual void FillRepository()
         {
             string command = $"SELECT * FROM [Venue]";
             SqlCommand cmd = new SqlCommand(command);
@@ -44,14 +44,18 @@ namespace DataAccessLayer
 
             dbreader.Close();
             connection.Close();
+            IsFilledWithDbData = true;
         }
 
-        public void Create(Venue item)
+        public virtual void Create(Venue item)
         {
             if (item != null)
             {
                 _venues.Add(item);
-                SaveChanges("Add", item);
+                if (IsFilledWithDbData == true)
+                {
+                    SaveChanges("Add", item);
+                }
             }
             else
             {
@@ -59,30 +63,26 @@ namespace DataAccessLayer
             }
         }
 
-        public Venue FindById(int id)
+        public virtual Venue FindById(int id)
         {
             return _venues.Find(elem => elem.Id == id);
         }
 
-        public List<Venue> GetAll()
+        public virtual List<Venue> GetAll()
         {
             return _venues;
         }
 
-        public void Remove(Venue item)
+        public virtual void Remove(int id)
         {
-            if (item != null)
+            _venues.Remove(FindById(id));
+            if (IsFilledWithDbData == true)
             {
-                _venues.Remove(FindById(item.Id));
-                SaveChanges("Remove", item);
-            }
-            else
-            {
-                throw new ArgumentNullException(nameof(item));
+                SaveChanges("Remove", new Venue(id, "", "", ""));
             }
         }
 
-        public void Update(Venue item)
+        public virtual void Update(Venue item)
         {
             if (item != null)
             {
@@ -95,7 +95,10 @@ namespace DataAccessLayer
                     }
                 }
 
-                SaveChanges("Update", item);
+                if (IsFilledWithDbData == true)
+                {
+                    SaveChanges("Update", item);
+                }
             }
             else
             {
@@ -103,7 +106,7 @@ namespace DataAccessLayer
             }
         }
 
-        public void SaveChanges(string type, Venue item)
+        public virtual void SaveChanges(string type, Venue item)
         {
             switch (type)
             {

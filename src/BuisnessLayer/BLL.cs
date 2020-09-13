@@ -10,23 +10,58 @@ namespace BuisnessLayer
 {
     public class BLL
     {
-        private AreaSqlRepository _areaRepository = new AreaSqlRepository();
+        private AreaSqlRepository _areaRepository;
 
-        private EventAreaSqlRepository _eventAreaRepository = new EventAreaSqlRepository();
+        private EventAreaSqlRepository _eventAreaRepository;
 
-        private EventSqlRepository _eventRepository = new EventSqlRepository();
+        private EventSqlRepository _eventRepository;
 
-        private EventSeatSqlRepository _eventSeatRepository = new EventSeatSqlRepository();
+        private EventSeatSqlRepository _eventSeatRepository;
 
-        private LayoutSqlRepository _layoutRepository = new LayoutSqlRepository();
+        private LayoutSqlRepository _layoutRepository;
 
-        private SeatSqlRepository _seatRepository = new SeatSqlRepository();
+        private SeatSqlRepository _seatRepository;
 
-        private VenueSqlRepository _venueRepository = new VenueSqlRepository();
+        private VenueSqlRepository _venueRepository;
 
-        public void AddEvent(Event @event)
+        public BLL()
         {
-            var layout = _layoutRepository.FindById(@event.LayoutId);
+            _areaRepository = new AreaSqlRepository();
+
+            _eventAreaRepository = new EventAreaSqlRepository();
+
+            _eventRepository = new EventSqlRepository();
+
+            _eventSeatRepository = new EventSeatSqlRepository();
+
+            _layoutRepository = new LayoutSqlRepository();
+
+            _seatRepository = new SeatSqlRepository();
+
+            _venueRepository = new VenueSqlRepository();
+        }
+
+        public BLL(AreaSqlRepository areaSqlRepository, EventAreaSqlRepository eventAreaSqlRepository, EventSqlRepository eventSqlRepository, EventSeatSqlRepository eventSeatSqlRepository,
+            LayoutSqlRepository layoutSqlRepository, SeatSqlRepository seatSqlRepository, VenueSqlRepository venueSqlRepository)
+        {
+            _areaRepository = areaSqlRepository;
+
+            _eventAreaRepository = eventAreaSqlRepository;
+
+            _eventRepository = eventSqlRepository;
+
+            _eventSeatRepository = eventSeatSqlRepository;
+
+            _layoutRepository = layoutSqlRepository;
+
+            _seatRepository = seatSqlRepository;
+
+            _venueRepository = venueSqlRepository;
+        }
+
+        public void AddEvent(int id, string name, string description, int layoutId, DateTime startDate, DateTime endDate)
+        {
+            var layout = _layoutRepository.FindById(layoutId);
             if (layout == null)
             {
                 throw new Exception("No such a layout");
@@ -38,7 +73,7 @@ namespace BuisnessLayer
                 {
                     var layout_check = _layoutRepository.FindById(eventElem.LayoutId);
                     var venue_check = _venueRepository.FindById(layout_check.VenueId);
-                    if (venueId == venue_check.Id && ((@event.StartDate >= eventElem.StartDate && @event.StartDate < eventElem.StartDate) || (@event.EndDate > eventElem.StartDate && @event.EndDate <= eventElem.EndDate)))
+                    if (venueId == venue_check.Id && ((startDate >= eventElem.StartDate && startDate < eventElem.StartDate) || (endDate > eventElem.StartDate && endDate <= eventElem.EndDate) || (startDate <= eventElem.StartDate && endDate >= eventElem.EndDate)))
                     {
                         throw new Exception("There is already an event");
                     }
@@ -65,9 +100,9 @@ namespace BuisnessLayer
                     }
                 }
 
-                if (isSeatExists == true && @event.Name.Length <= 120 && @event.Description.Length <= 400 && @event.StartDate >= DateTime.Now && @event.EndDate >= @event.StartDate)
+                if (isSeatExists == true && name.Length <= 120 && description.Length <= 400 && startDate >= DateTime.Now && endDate >= startDate)
                 {
-                    _eventRepository.Create(@event);
+                    _eventRepository.Create(new Event(id, name, description, layoutId, startDate, endDate));
                 }
                 else
                 {
@@ -76,19 +111,19 @@ namespace BuisnessLayer
             }
         }
 
-        public void AddVenue(Venue venue)
+        public void AddVenue(int id, string name, string description, string address, string phone)
         {
             foreach (var venueElem in _venueRepository.GetAll())
             {
-                if (venueElem.Name == venue.Name)
+                if (venueElem.Name == name)
                 {
                     throw new Exception("There is already a venue with such name");
                 }
             }
 
-            if (venue.Name.Length <= 50 && venue.Description.Length <= 120 && venue.Address.Length <= 150 && venue.Phone.Length <= 15)
+            if (name.Length <= 50 && description.Length <= 120 && address.Length <= 150 && phone.Length <= 15)
             {
-                _venueRepository.Create(venue);
+                _venueRepository.Create(new Venue(id, name, description, address, phone));
             }
             else
             {
@@ -96,20 +131,20 @@ namespace BuisnessLayer
             }
         }
 
-        public void AddLayout(Layout layout)
+        public void AddLayout(int id, string name, int venueId, string description)
         {
             foreach (var layoutElem in _layoutRepository.GetAll())
             {
-                if (layoutElem.Name == layout.Name && layoutElem.VenueId == layout.VenueId)
+                if (layoutElem.Name == name && layoutElem.VenueId == venueId)
                 {
                     throw new Exception("There is already a layout with such venue");
                 }
             }
 
-            Venue venue = _venueRepository.FindById(layout.Id);
-            if (layout.Name.Length <= 50 && venue != null && layout.Description.Length <= 120)
+            Venue venue = _venueRepository.FindById(venueId);
+            if (name.Length <= 50 && venue != null && description.Length <= 120)
             {
-                _layoutRepository.Create(layout);
+                _layoutRepository.Create(new Layout(id, name, venueId, description));
             }
             else
             {
@@ -117,20 +152,20 @@ namespace BuisnessLayer
             }
         }
 
-        public void AddArea(Area area)
+        public void AddArea(int id, int layoutId, string description, int coordX, int coordY)
         {
-            foreach (var areaElem in _areaRepository.GetAll())
+            foreach (Area areaElem in _areaRepository.GetAll())
             {
-                if (areaElem.Description == area.Description && areaElem.LayoutId == area.LayoutId)
+                if (areaElem.Description == description && areaElem.LayoutId == layoutId)
                 {
                     throw new Exception("There is already a area with such layout and description");
                 }
             }
 
-            var layout = _layoutRepository.FindById(area.LayoutId);
-            if (layout != null && area.Description.Length <= 200 && area.CoordX >= 0 && area.CoordY >= 0)
+            var layout = _layoutRepository.FindById(layoutId);
+            if (layout != null && description.Length <= 200 && coordX >= 0 && coordY >= 0)
             {
-                _areaRepository.Create(area);
+                _areaRepository.Create(new Area(id, layoutId, description, coordX, coordY));
             }
             else
             {
@@ -138,20 +173,20 @@ namespace BuisnessLayer
             }
         }
 
-        public void AddSeat(Seat seat)
+        public void AddSeat(int id, int areaId, int row, int number)
         {
             foreach (var seatElem in _seatRepository.GetAll())
             {
-                if (seatElem.AreaId == seat.AreaId && seatElem.Row == seat.Row && seatElem.Number == seat.Number)
+                if (seatElem.AreaId == areaId && seatElem.Row == row && seatElem.Number == number)
                 {
                     throw new Exception("There is already a seat with this coords");
                 }
             }
 
-            var area = _areaRepository.FindById(seat.AreaId);
-            if (area != null && seat.Row >= 0 && seat.Number >= 0)
+            var area = _areaRepository.FindById(areaId);
+            if (area != null && row >= 0 && number >= 0)
             {
-                _seatRepository.Create(seat);
+                _seatRepository.Create(new Seat(id, areaId, row, number));
             }
             else
             {
@@ -159,20 +194,20 @@ namespace BuisnessLayer
             }
         }
 
-        public void AddEventArea(EventArea eventArea)
+        public void AddEventArea(int id, int eventId, string description, int coordX, int coordY, decimal price)
         {
             foreach (var eventAreaElem in _eventAreaRepository.GetAll())
             {
-                if (eventAreaElem.EventId == eventArea.EventId && eventAreaElem.CoordX == eventArea.CoordX && eventArea.CoordY == eventAreaElem.CoordY)
+                if (eventAreaElem.EventId == eventId && eventAreaElem.CoordX == coordX && coordY == eventAreaElem.CoordY)
                 {
                     throw new Exception("There is already an event area with such coords");
                 }
             }
 
-            var @event = _eventRepository.FindById(eventArea.EventId);
-            if (@event != null && eventArea.Description.Length <= 200 && eventArea.CoordX >= 0 && eventArea.CoordY >= 0 && eventArea.Price >= 0)
+            var @event = _eventRepository.FindById(eventId);
+            if (@event != null && description.Length <= 200 && coordX >= 0 && coordY >= 0 && price >= 0)
             {
-                _eventAreaRepository.Create(eventArea);
+                _eventAreaRepository.Create(new EventArea(id, eventId, description, coordX, coordY, price));
             }
             else
             {
@@ -180,20 +215,20 @@ namespace BuisnessLayer
             }
         }
 
-        public void AddEventSeat(EventSeat eventSeat)
+        public void AddEventSeat(int id, int eventAreaId, int row, int number, int state)
         {
             foreach (var eventSeatElem in _eventSeatRepository.GetAll())
             {
-                if (eventSeatElem.EventAreaId == eventSeat.EventAreaId && eventSeatElem.Row == eventSeat.Row && eventSeatElem.Number == eventSeat.Number)
+                if (eventSeatElem.EventAreaId == eventAreaId && eventSeatElem.Row == row && eventSeatElem.Number == number)
                 {
                     throw new Exception("There is already an event seat with such coords");
                 }
             }
 
-            var eventArea = _eventAreaRepository.FindById(eventSeat.EventAreaId);
-            if (eventArea != null && eventSeat.Row >= 0 && eventSeat.Number >= 0)
+            var eventArea = _eventAreaRepository.FindById(eventAreaId);
+            if (eventArea != null && row >= 0 && number >= 0)
             {
-                _eventSeatRepository.Create(eventSeat);
+                _eventSeatRepository.Create(new EventSeat(id, eventAreaId, row, number, state));
             }
             else
             {
@@ -201,20 +236,20 @@ namespace BuisnessLayer
             }
         }
 
-        public void UpdateEventSeat(EventSeat eventSeat)
+        public void UpdateEventSeat(int id, int eventAreaId, int row, int number, int state)
         {
             foreach (var eventSeatElem in _eventSeatRepository.GetAll())
             {
-                if (eventSeatElem.EventAreaId == eventSeat.EventAreaId && eventSeatElem.Row == eventSeat.Row && eventSeatElem.Number == eventSeat.Number)
+                if (eventSeatElem.EventAreaId == eventAreaId && eventSeatElem.Row == row && eventSeatElem.Number == number)
                 {
                     throw new Exception("There is already an event seat with such coords");
                 }
             }
 
-            var eventArea = _eventAreaRepository.FindById(eventSeat.EventAreaId);
-            if (eventArea != null && eventSeat.Row >= 0 && eventSeat.Number >= 0)
+            var eventArea = _eventAreaRepository.FindById(eventAreaId);
+            if (eventArea != null && row >= 0 && number >= 0)
             {
-                _eventSeatRepository.Update(eventSeat);
+                _eventSeatRepository.Update(new EventSeat(id, eventAreaId, row, number, state));
             }
             else
             {
@@ -222,20 +257,20 @@ namespace BuisnessLayer
             }
         }
 
-        public void UpdateEventArea(EventArea eventArea)
+        public void UpdateEventArea(int id, int eventId, string description, int coordX, int coordY, decimal price)
         {
             foreach (var eventAreaElem in _eventAreaRepository.GetAll())
             {
-                if (eventAreaElem.EventId == eventArea.EventId && eventAreaElem.CoordX == eventArea.CoordX && eventArea.CoordY == eventAreaElem.CoordY)
+                if (eventAreaElem.EventId == eventId && eventAreaElem.CoordX == coordX && coordY == eventAreaElem.CoordY)
                 {
                     throw new Exception("There is already an event area with such coords");
                 }
             }
 
-            var @event = _eventRepository.FindById(eventArea.EventId);
-            if (@event != null && eventArea.Description.Length <= 200 && eventArea.CoordX >= 0 && eventArea.CoordY >= 0 && eventArea.Price >= 0)
+            var @event = _eventRepository.FindById(eventId);
+            if (@event != null && description.Length <= 200 && coordX >= 0 && coordY >= 0 && price >= 0)
             {
-                _eventAreaRepository.Update(eventArea);
+                _eventAreaRepository.Update(new EventArea(id, eventId, description, coordX, coordY, price));
             }
             else
             {
@@ -243,9 +278,9 @@ namespace BuisnessLayer
             }
         }
 
-        public void UpdateEvent(Event @event)
+        public void UpdateEvent(int id, string name, string description, int layoutId, DateTime startDate, DateTime endDate)
         {
-            var layout = _layoutRepository.FindById(@event.LayoutId);
+            var layout = _layoutRepository.FindById(layoutId);
             if (layout == null)
             {
                 throw new Exception("No such a layout");
@@ -257,7 +292,7 @@ namespace BuisnessLayer
                 {
                     var layout_check = _layoutRepository.FindById(eventElem.LayoutId);
                     var venue_check = _venueRepository.FindById(layout_check.VenueId);
-                    if (venueId == venue_check.Id && ((@event.StartDate >= eventElem.StartDate && @event.StartDate < eventElem.StartDate) || (@event.EndDate > eventElem.StartDate && @event.EndDate <= eventElem.EndDate)))
+                    if (venueId == venue_check.Id && ((startDate >= eventElem.StartDate && startDate < eventElem.EndDate) || (endDate > eventElem.StartDate && endDate <= eventElem.EndDate) || (startDate <= eventElem.StartDate && endDate >= eventElem.EndDate)))
                     {
                         throw new Exception("There is already an event");
                     }
@@ -284,9 +319,9 @@ namespace BuisnessLayer
                     }
                 }
 
-                if (isSeatExists == true && @event.Name.Length <= 120 && @event.Description.Length <= 400 && @event.StartDate >= DateTime.Now && @event.EndDate >= @event.StartDate)
+                if (isSeatExists == true && name.Length <= 120 && description.Length <= 400 && startDate >= DateTime.Now && endDate >= startDate)
                 {
-                    _eventRepository.Update(@event);
+                    _eventRepository.Update(new Event(id, name, description, layoutId, startDate, endDate));
                 }
                 else
                 {
@@ -295,19 +330,19 @@ namespace BuisnessLayer
             }
         }
 
-        public void UpdateVenue(Venue venue)
+        public void UpdateVenue(int id, string name, string description, string address, string phone)
         {
             foreach (var venueElem in _venueRepository.GetAll())
             {
-                if (venueElem.Name == venue.Name)
+                if (venueElem.Name == name)
                 {
                     throw new Exception("There is already a venue with such name");
                 }
             }
 
-            if (venue.Name.Length <= 50 && venue.Description.Length <= 120 && venue.Address.Length <= 150 && venue.Phone.Length <= 15)
+            if (name.Length <= 50 && description.Length <= 120 && address.Length <= 150 && phone.Length <= 15)
             {
-                _venueRepository.Update(venue);
+                _venueRepository.Update(new Venue(id, name, description, address, phone));
             }
             else
             {
@@ -315,20 +350,20 @@ namespace BuisnessLayer
             }
         }
 
-        public void UpdateLayout(Layout layout)
+        public void UpdateLayout(int id, string name, int venueId, string description)
         {
             foreach (var layoutElem in _layoutRepository.GetAll())
             {
-                if (layoutElem.Name == layout.Name && layoutElem.VenueId == layout.VenueId)
+                if (layoutElem.Name == name && layoutElem.VenueId == venueId)
                 {
                     throw new Exception("There is already a layout with such venue");
                 }
             }
 
-            Venue venue = _venueRepository.FindById(layout.Id);
-            if (layout.Name.Length <= 50 && venue != null && layout.Description.Length <= 120)
+            Venue venue = _venueRepository.FindById(venueId);
+            if (name.Length <= 50 && venue != null && description.Length <= 120)
             {
-                _layoutRepository.Update(layout);
+                _layoutRepository.Update(new Layout(id, name, venueId, description));
             }
             else
             {
@@ -336,20 +371,20 @@ namespace BuisnessLayer
             }
         }
 
-        public void UpdateArea(Area area)
+        public void UpdateArea(int id, int layoutId, string description, int coordX, int coordY)
         {
             foreach (var areaElem in _areaRepository.GetAll())
             {
-                if (areaElem.Description == area.Description && areaElem.LayoutId == area.LayoutId)
+                if (areaElem.Description == description && areaElem.LayoutId == layoutId)
                 {
                     throw new Exception("There is already a area with such layout and description");
                 }
             }
 
-            var layout = _layoutRepository.FindById(area.LayoutId);
-            if (layout != null && area.Description.Length <= 200 && area.CoordX >= 0 && area.CoordY >= 0)
+            var layout = _layoutRepository.FindById(layoutId);
+            if (layout != null && description.Length <= 200 && coordX >= 0 && coordY >= 0)
             {
-                _areaRepository.Update(area);
+                _areaRepository.Update(new Area(id, layoutId, description, coordX, coordY));
             }
             else
             {
@@ -357,20 +392,20 @@ namespace BuisnessLayer
             }
         }
 
-        public void UpdateSeat(Seat seat)
+        public void UpdateSeat(int id, int areaId, int row, int number)
         {
             foreach (var seatElem in _seatRepository.GetAll())
             {
-                if (seatElem.AreaId == seat.AreaId && seatElem.Row == seat.Row && seatElem.Number == seat.Number)
+                if (seatElem.AreaId == areaId && seatElem.Row == row && seatElem.Number == number)
                 {
                     throw new Exception("There is already a seat with this coords");
                 }
             }
 
-            var area = _areaRepository.FindById(seat.AreaId);
-            if (area != null && seat.Row >= 0 && seat.Number >= 0)
+            var area = _areaRepository.FindById(areaId);
+            if (area != null && row >= 0 && number >= 0)
             {
-                _seatRepository.Update(seat);
+                _seatRepository.Update(new Seat(id, areaId, row, number));
             }
             else
             {
@@ -378,39 +413,74 @@ namespace BuisnessLayer
             }
         }
 
-        public void DeleteEventSeat(EventSeat eventSeat)
+        public void DeleteEventSeat(int id)
         {
-            _eventSeatRepository.Remove(eventSeat);
+            _eventSeatRepository.Remove(id);
         }
 
-        public void DeleteEventArea(EventArea eventArea)
+        public void DeleteEventArea(int id)
         {
-            _eventAreaRepository.Remove(eventArea);
+            _eventAreaRepository.Remove(id);
         }
 
-        public void DeleteEvent(Event @event)
+        public void DeleteEvent(int id)
         {
-            _eventRepository.Remove(@event);
+            _eventRepository.Remove(id);
         }
 
-        public void DeleteVenue(Venue venue)
+        public void DeleteVenue(int id)
         {
-            _venueRepository.Remove(venue);
+            _venueRepository.Remove(id);
         }
 
-        public void DeleteLayout(Layout layout)
+        public void DeleteLayout(int id)
         {
-            _layoutRepository.Remove(layout);
+            _layoutRepository.Remove(id);
         }
 
-        public void DeleteArea(Area area)
+        public void DeleteArea(int id)
         {
-            _areaRepository.Remove(area);
+            _areaRepository.Remove(id);
         }
 
-        public void DeleteSeat(Seat seat)
+        public void DeleteSeat(int id)
         {
-            _seatRepository.Remove(seat);
+            _seatRepository.Remove(id);
+        }
+
+        public EventSeat ReadEventSeat(int id)
+        {
+            return _eventSeatRepository.FindById(id);
+        }
+
+        public EventArea ReadEventArea(int id)
+        {
+            return _eventAreaRepository.FindById(id);
+        }
+
+        public Event ReadEvent(int id)
+        {
+            return _eventRepository.FindById(id);
+        }
+
+        public Venue ReadVenue(int id)
+        {
+            return _venueRepository.FindById(id);
+        }
+
+        public Layout ReadLayout(int id)
+        {
+            return _layoutRepository.FindById(id);
+        }
+
+        public Area ReadArea(int id)
+        {
+            return _areaRepository.FindById(id);
+        }
+
+        public Seat ReadSeat(int id)
+        {
+            return _seatRepository.FindById(id);
         }
     }
 }
