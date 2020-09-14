@@ -9,26 +9,32 @@ using DomainEntities;
 
 namespace DataAccessLayer
 {
+    // Repository for event seat type of data
     public class EventSeatSqlRepository : IRepository<EventSeat>, ISqlRepository<EventSeat>
     {
+        // Repository filled with event seat data
         private List<EventSeat> _eventSeats;
 
+        // Constructor that can get connection string
         public EventSeatSqlRepository(string connection)
         {
             ConnectionString = connection;
             _eventSeats = new List<EventSeat>();
         }
 
+        // Creating repository without magor changes
         public EventSeatSqlRepository()
         {
-            ConnectionString = @"Data Source =.\SQLEXPRESS;Initial Catalog = TicketManagement; Integrated Security = true";
+            ConnectionString = @"Data Source =.\;Initial Catalog = TicketManagement; Integrated Security = true";
             _eventSeats = new List<EventSeat>();
         }
 
         public string ConnectionString { get; private set; }
 
+        // Flag that used to check if data were taken from database
         public bool IsFilledWithDbData { get; private set; } = false;
 
+        // Method that fills local repository with data from database
         public virtual void FillRepositoryWithSqlData()
         {
             string command = $"SELECT * FROM [EventSeat]";
@@ -48,6 +54,7 @@ namespace DataAccessLayer
             IsFilledWithDbData = true;
         }
 
+        // Method that add new event seat node to database
         public virtual void Create(EventSeat item)
         {
             if (item != null)
@@ -64,16 +71,19 @@ namespace DataAccessLayer
             }
         }
 
+        // Method that search for event seat object with certain id
         public virtual EventSeat FindById(int id)
         {
             return _eventSeats.Find(elem => elem.Id == id);
         }
 
+        // Method that returns repository to user
         public virtual List<EventSeat> GetAll()
         {
             return _eventSeats;
         }
 
+        // Method that removes event seat object from repository with certain id
         public virtual void Remove(int id)
         {
             _eventSeats.Remove(FindById(id));
@@ -83,6 +93,7 @@ namespace DataAccessLayer
             }
         }
 
+        // Method that update object in repository
         public virtual void Update(EventSeat item)
         {
             if (item != null)
@@ -107,6 +118,7 @@ namespace DataAccessLayer
             }
         }
 
+        // Method that brings changes from repository to database
         public virtual void SaveChanges(string type, EventSeat item)
         {
             switch (type)

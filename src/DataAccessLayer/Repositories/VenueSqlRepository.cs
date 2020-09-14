@@ -9,26 +9,32 @@ using DomainEntities;
 
 namespace DataAccessLayer
 {
+    // Repository for venue type of data
     public class VenueSqlRepository : IRepository<Venue>, ISqlRepository<Venue>
     {
+        // Repository filled with venue data
         private List<Venue> _venues;
 
+        // Constructor that can get connection string
         public VenueSqlRepository(string connection)
         {
             ConnectionString = connection;
             _venues = new List<Venue>();
         }
 
+        // Creating repository without magor changes
         public VenueSqlRepository()
         {
-            ConnectionString = @"Data Source =.\SQLEXPRESS;Initial Catalog = TicketManagement; Integrated Security = true";
+            ConnectionString = @"Data Source =.\;Initial Catalog = TicketManagement; Integrated Security = true";
             _venues = new List<Venue>();
         }
 
         public string ConnectionString { get; private set; }
 
+        // Flag that used to check if data were taken from database
         public bool IsFilledWithDbData { get; private set; } = false;
 
+        // Method that fills local repository with data from database
         public virtual void FillRepositoryWithSqlData()
         {
             string command = $"SELECT * FROM [Venue]";
@@ -48,6 +54,7 @@ namespace DataAccessLayer
             IsFilledWithDbData = true;
         }
 
+        // Method that add new venue node to database
         public virtual void Create(Venue item)
         {
             if (item != null)
@@ -64,16 +71,19 @@ namespace DataAccessLayer
             }
         }
 
+        // Method that search for venue object with certain id
         public virtual Venue FindById(int id)
         {
             return _venues.Find(elem => elem.Id == id);
         }
 
+        // Method that returns repository to user
         public virtual List<Venue> GetAll()
         {
             return _venues;
         }
 
+        // Method that removes layout object from repository with certain id
         public virtual void Remove(int id)
         {
             _venues.Remove(FindById(id));
@@ -83,6 +93,7 @@ namespace DataAccessLayer
             }
         }
 
+        // Method that update object in repository
         public virtual void Update(Venue item)
         {
             if (item != null)
@@ -107,6 +118,7 @@ namespace DataAccessLayer
             }
         }
 
+        // Method that brings changes from repository to database
         public virtual void SaveChanges(string type, Venue item)
         {
             switch (type)

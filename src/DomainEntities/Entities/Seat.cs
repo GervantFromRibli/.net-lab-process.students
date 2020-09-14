@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace DomainEntities
 {
+    // Class that represent seat table in database
     public class Seat
     {
         public Seat(int id, int areaId, int row, int number)

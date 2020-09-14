@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace DomainEntities
 {
+    // Class that represent venue table in database
     public class Venue
     {
         public Venue(int id, string name, string description, string address)

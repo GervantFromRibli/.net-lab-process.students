@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace DomainEntities
 {
+    // Class that represent event table in database
     public class Event
     {
         public Event(int id, string name, string description, int layoutId, DateTime startDate, DateTime endDate)

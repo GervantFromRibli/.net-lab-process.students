@@ -9,26 +9,32 @@ using DomainEntities;
 
 namespace DataAccessLayer
 {
+    // Repository for seat type of data
     public class SeatSqlRepository : IRepository<Seat>, ISqlRepository<Seat>
     {
+        // Repository filled with seat data
         private List<Seat> _seats;
 
+        // Constructor that can get connection string
         public SeatSqlRepository(string connection)
         {
             ConnectionString = connection;
             _seats = new List<Seat>();
         }
 
+        // Creating repository without magor changes
         public SeatSqlRepository()
         {
-            ConnectionString = @"Data Source =.\SQLEXPRESS;Initial Catalog = TicketManagement; Integrated Security = true";
+            ConnectionString = @"Data Source =.\;Initial Catalog = TicketManagement; Integrated Security = true";
             _seats = new List<Seat>();
         }
 
         public string ConnectionString { get; private set; }
 
+        // Flag that used to check if data were taken from database
         public bool IsFilledWithDbData { get; private set; } = false;
 
+        // Method that fills local repository with data from database
         public virtual void FillRepositoryWithSqlData()
         {
             string command = $"SELECT * FROM [Seat]";
@@ -48,6 +54,7 @@ namespace DataAccessLayer
             IsFilledWithDbData = true;
         }
 
+        // Method that add new seat node to database
         public virtual void Create(Seat item)
         {
             if (item != null)
@@ -64,16 +71,19 @@ namespace DataAccessLayer
             }
         }
 
+        // Method that search for layout object with certain id
         public virtual Seat FindById(int id)
         {
             return _seats.Find(elem => elem.Id == id);
         }
 
+        // Method that returns repository to user
         public virtual List<Seat> GetAll()
         {
             return _seats;
         }
 
+        // Method that removes layout object from repository with certain id
         public virtual void Remove(int id)
         {
             _seats.Remove(FindById(id));
@@ -83,6 +93,7 @@ namespace DataAccessLayer
             }
         }
 
+        // Method that update object in repository
         public virtual void Update(Seat item)
         {
             if (item != null)
@@ -107,6 +118,7 @@ namespace DataAccessLayer
             }
         }
 
+        // Method that brings changes from repository to database
         public virtual void SaveChanges(string type, Seat item)
         {
             switch (type)

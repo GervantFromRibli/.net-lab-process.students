@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace DomainEntities
 {
+    // Class that represent layout table in database
     public class Layout
     {
         public Layout(int id, string name, int venueId, string description)

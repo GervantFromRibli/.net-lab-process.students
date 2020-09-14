@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace DomainEntities
 {
+    // Class that represent area table in database
     public class Area
     {
         public Area(int id, int layoutId, string description, int coordX, int coordY)

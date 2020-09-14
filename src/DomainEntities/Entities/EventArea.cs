@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace DomainEntities
 {
+    // Class that represent event area table in database
     public class EventArea
     {
         public EventArea(int id, int eventId, string description, int coordX, int coordY, decimal price)

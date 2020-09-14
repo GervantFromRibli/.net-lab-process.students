@@ -10,26 +10,32 @@ using DomainEntities;
 
 namespace DataAccessLayer
 {
+    // Repository for area type of data
     public class AreaSqlRepository : IRepository<Area>, ISqlRepository<Area>
     {
+        // Repository filled with area data
         private List<Area> _areas;
 
+        // Constructor that can get connection string
         public AreaSqlRepository(string connection)
         {
             ConnectionString = connection;
             _areas = new List<Area>();
         }
 
+        // Creating repository without magor changes
         public AreaSqlRepository()
         {
-            ConnectionString = @"Data Source =.\SQLEXPRESS;Initial Catalog = TicketManagement; Integrated Security = true";
+            ConnectionString = @"Data Source =.\; Initial Catalog = TicketManagement; Integrated Security = true";
             _areas = new List<Area>();
         }
 
         public string ConnectionString { get; private set; }
 
+        // Flag that used to check if data were taken from database
         public bool IsFilledWithDbData { get; private set; } = false;
 
+        // Method that fills local repository with data from database
         public virtual void FillRepositoryWithSqlData()
         {
             string command = $"SELECT * FROM [Area]";
@@ -49,6 +55,7 @@ namespace DataAccessLayer
             IsFilledWithDbData = true;
         }
 
+        // Method that add new area node to database
         public virtual void Create(Area item)
         {
             if (item != null)
@@ -65,16 +72,19 @@ namespace DataAccessLayer
             }
         }
 
+        // Method that search for area object with certain id
         public virtual Area FindById(int id)
         {
             return _areas.Find(elem => elem.Id == id);
         }
 
+        // Method that returns repository to user
         public virtual List<Area> GetAll()
         {
             return _areas;
         }
 
+        // Method that removes area object from repository with certain id
         public virtual void Remove(int id)
         {
             _areas.Remove(FindById(id));
@@ -84,6 +94,7 @@ namespace DataAccessLayer
             }
         }
 
+        // Method that update object in repository
         public virtual void Update(Area item)
         {
             if (item != null)
@@ -108,6 +119,7 @@ namespace DataAccessLayer
             }
         }
 
+        // Method that brings changes from repository to database
         public virtual void SaveChanges(string type, Area item)
         {
             switch (type)

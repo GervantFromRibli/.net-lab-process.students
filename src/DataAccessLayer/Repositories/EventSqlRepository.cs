@@ -10,26 +10,32 @@ using DomainEntities;
 
 namespace DataAccessLayer
 {
+    // Repository for event type of data
     public class EventSqlRepository : IRepository<Event>, ISqlRepository<Event>
     {
+        // Repository filled with event data
         private List<Event> _events;
 
+        // Constructor that can get connection string
         public EventSqlRepository(string connection)
         {
             ConnectionString = connection;
             _events = new List<Event>();
         }
 
+        // Creating repository without magor changes
         public EventSqlRepository()
         {
-            ConnectionString = @"Data Source =.\SQLEXPRESS;Initial Catalog = TicketManagement; Integrated Security = true";
+            ConnectionString = @"Data Source = .\;Initial Catalog = TicketManagement; Integrated Security = true";
             _events = new List<Event>();
         }
 
         public string ConnectionString { get; private set; }
 
+        // Flag that used to check if data were taken from database
         public bool IsFilledWithDbData { get; private set; } = false;
 
+        // Method that fills local repository with data from database
         public virtual void FillRepositoryWithSqlData()
         {
             string command = $"SELECT * FROM [Event]";
@@ -49,6 +55,7 @@ namespace DataAccessLayer
             IsFilledWithDbData = true;
         }
 
+        // Method that add new event node to database
         public virtual void Create(Event item)
         {
             if (item != null)
@@ -65,16 +72,19 @@ namespace DataAccessLayer
             }
         }
 
+        // Method that search for event object with certain id
         public virtual Event FindById(int id)
         {
             return _events.Find(elem => elem.Id == id);
         }
 
+        // Method that returns repository to user
         public virtual List<Event> GetAll()
         {
             return _events;
         }
 
+        // Method that removes event object from repository with certain id
         public virtual void Remove(int id)
         {
             _events.Remove(FindById(id));
@@ -84,6 +94,7 @@ namespace DataAccessLayer
             }
         }
 
+        // Method that update object in repository
         public virtual void Update(Event item)
         {
             if (item != null)
@@ -108,6 +119,7 @@ namespace DataAccessLayer
             }
         }
 
+        // Method that brings changes from repository to database
         public virtual void SaveChanges(string type, Event item)
         {
             switch (type)

@@ -9,26 +9,32 @@ using DomainEntities;
 
 namespace DataAccessLayer
 {
+    // Repository for event area type of data
     public class EventAreaSqlRepository : IRepository<EventArea>, ISqlRepository<EventArea>
     {
+        // Repository filled with event area data
         private List<EventArea> _eventAreas;
 
+        // Constructor that can get connection string
         public EventAreaSqlRepository(string connection)
         {
             ConnectionString = connection;
             _eventAreas = new List<EventArea>();
         }
 
+        // Creating repository without magor changes
         public EventAreaSqlRepository()
         {
-            ConnectionString = @"Data Source =.\SQLEXPRESS;Initial Catalog = TicketManagement; Integrated Security = true";
+            ConnectionString = @"Data Source =.\;Initial Catalog = TicketManagement; Integrated Security = true";
             _eventAreas = new List<EventArea>();
         }
 
         public string ConnectionString { get; private set; }
 
+        // Flag that used to check if data were taken from database
         public bool IsFilledWithDbData { get; private set; } = false;
 
+        // Method that fills local repository with data from database
         public virtual void FillRepositoryWithSqlData()
         {
             string command = $"SELECT * FROM [EventArea]";
@@ -48,6 +54,7 @@ namespace DataAccessLayer
             IsFilledWithDbData = true;
         }
 
+        // Method that add new event area node to database
         public virtual void Create(EventArea item)
         {
             if (item != null)
@@ -64,16 +71,19 @@ namespace DataAccessLayer
             }
         }
 
+        // Method that search for event area object with certain id
         public virtual EventArea FindById(int id)
         {
             return _eventAreas.Find(elem => elem.Id == id);
         }
 
+        // Method that returns repository to user
         public virtual List<EventArea> GetAll()
         {
             return _eventAreas;
         }
 
+        // Method that removes event area object from repository with certain id
         public virtual void Remove(int id)
         {
             _eventAreas.Remove(FindById(id));
@@ -83,6 +93,7 @@ namespace DataAccessLayer
             }
         }
 
+        // Method that update object in repository
         public virtual void Update(EventArea item)
         {
             if (item != null)
@@ -107,6 +118,7 @@ namespace DataAccessLayer
             }
         }
 
+        // Method that brings changes from repository to database
         public virtual void SaveChanges(string type, EventArea item)
         {
             switch (type)

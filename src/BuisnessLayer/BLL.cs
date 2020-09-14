@@ -8,8 +8,10 @@ using DomainEntities;
 
 namespace BuisnessLayer
 {
+    // Class for making interaction between Data Access Layer and user
     public class BLL
     {
+        // Instances of repositories
         private AreaSqlRepository _areaRepository;
 
         private EventAreaSqlRepository _eventAreaRepository;
@@ -24,6 +26,7 @@ namespace BuisnessLayer
 
         private VenueSqlRepository _venueRepository;
 
+        // Constructors for layer with base repositories and users` repositories
         public BLL()
         {
             _areaRepository = new AreaSqlRepository();
@@ -59,6 +62,7 @@ namespace BuisnessLayer
             _venueRepository = venueSqlRepository;
         }
 
+        // Method that adds event after checking data validation
         public void AddEvent(int id, string name, string description, int layoutId, DateTime startDate, DateTime endDate)
         {
             var layout = _layoutRepository.FindById(layoutId);
@@ -111,6 +115,7 @@ namespace BuisnessLayer
             }
         }
 
+        // Method that adds venue after checking data validation
         public void AddVenue(int id, string name, string description, string address, string phone)
         {
             foreach (var venueElem in _venueRepository.GetAll())
@@ -131,6 +136,7 @@ namespace BuisnessLayer
             }
         }
 
+        // Method that adds layout after checking data validation
         public void AddLayout(int id, string name, int venueId, string description)
         {
             foreach (var layoutElem in _layoutRepository.GetAll())
@@ -152,6 +158,7 @@ namespace BuisnessLayer
             }
         }
 
+        // Method that adds area after checking data validation
         public void AddArea(int id, int layoutId, string description, int coordX, int coordY)
         {
             foreach (Area areaElem in _areaRepository.GetAll())
@@ -173,6 +180,7 @@ namespace BuisnessLayer
             }
         }
 
+        // Method that adds seat after checking data validation
         public void AddSeat(int id, int areaId, int row, int number)
         {
             foreach (var seatElem in _seatRepository.GetAll())
@@ -194,6 +202,7 @@ namespace BuisnessLayer
             }
         }
 
+        // Method that adds event area after checking data validation
         public void AddEventArea(int id, int eventId, string description, int coordX, int coordY, decimal price)
         {
             foreach (var eventAreaElem in _eventAreaRepository.GetAll())
@@ -215,6 +224,7 @@ namespace BuisnessLayer
             }
         }
 
+        // Method that adds event seat after checking data validation
         public void AddEventSeat(int id, int eventAreaId, int row, int number, int state)
         {
             foreach (var eventSeatElem in _eventSeatRepository.GetAll())
@@ -236,6 +246,7 @@ namespace BuisnessLayer
             }
         }
 
+        // Method that updates event seat after checking data validation
         public void UpdateEventSeat(int id, int eventAreaId, int row, int number, int state)
         {
             foreach (var eventSeatElem in _eventSeatRepository.GetAll())
@@ -257,6 +268,7 @@ namespace BuisnessLayer
             }
         }
 
+        // Method that updates event area after checking data validation
         public void UpdateEventArea(int id, int eventId, string description, int coordX, int coordY, decimal price)
         {
             foreach (var eventAreaElem in _eventAreaRepository.GetAll())
@@ -278,6 +290,7 @@ namespace BuisnessLayer
             }
         }
 
+        // Method that updates event after checking data validation
         public void UpdateEvent(int id, string name, string description, int layoutId, DateTime startDate, DateTime endDate)
         {
             var layout = _layoutRepository.FindById(layoutId);
@@ -292,7 +305,7 @@ namespace BuisnessLayer
                 {
                     var layout_check = _layoutRepository.FindById(eventElem.LayoutId);
                     var venue_check = _venueRepository.FindById(layout_check.VenueId);
-                    if (venueId == venue_check.Id && ((startDate >= eventElem.StartDate && startDate < eventElem.EndDate) || (endDate > eventElem.StartDate && endDate <= eventElem.EndDate) || (startDate <= eventElem.StartDate && endDate >= eventElem.EndDate)))
+                    if (venueId == venue_check.Id && ((startDate >= eventElem.StartDate && startDate < eventElem.EndDate) || (endDate > eventElem.StartDate && endDate <= eventElem.EndDate) || (startDate <= eventElem.StartDate && endDate >= eventElem.EndDate)) && eventElem.Id != id)
                     {
                         throw new Exception("There is already an event");
                     }
@@ -330,6 +343,7 @@ namespace BuisnessLayer
             }
         }
 
+        // Method that updates venue after checking data validation
         public void UpdateVenue(int id, string name, string description, string address, string phone)
         {
             foreach (var venueElem in _venueRepository.GetAll())
@@ -350,6 +364,7 @@ namespace BuisnessLayer
             }
         }
 
+        // Method that updates layout after checking data validation
         public void UpdateLayout(int id, string name, int venueId, string description)
         {
             foreach (var layoutElem in _layoutRepository.GetAll())
@@ -371,6 +386,7 @@ namespace BuisnessLayer
             }
         }
 
+        // Method that updates area after checking data validation
         public void UpdateArea(int id, int layoutId, string description, int coordX, int coordY)
         {
             foreach (var areaElem in _areaRepository.GetAll())
@@ -392,6 +408,7 @@ namespace BuisnessLayer
             }
         }
 
+        // Method that updates seat after checking data validation
         public void UpdateSeat(int id, int areaId, int row, int number)
         {
             foreach (var seatElem in _seatRepository.GetAll())
@@ -413,74 +430,130 @@ namespace BuisnessLayer
             }
         }
 
+        // Method that deletes event seat
         public void DeleteEventSeat(int id)
         {
             _eventSeatRepository.Remove(id);
         }
 
+        // Method that deletes event area
         public void DeleteEventArea(int id)
         {
             _eventAreaRepository.Remove(id);
         }
 
+        // Method that deletes event
         public void DeleteEvent(int id)
         {
             _eventRepository.Remove(id);
         }
 
+        // Method that deletes venue
         public void DeleteVenue(int id)
         {
             _venueRepository.Remove(id);
         }
 
+        // Method that deletes layout
         public void DeleteLayout(int id)
         {
             _layoutRepository.Remove(id);
         }
 
+        // Method that deletes area
         public void DeleteArea(int id)
         {
             _areaRepository.Remove(id);
         }
 
+        // Method that deletes seat
         public void DeleteSeat(int id)
         {
             _seatRepository.Remove(id);
         }
 
+        // Method that reads event seat
         public EventSeat ReadEventSeat(int id)
         {
             return _eventSeatRepository.FindById(id);
         }
 
+        // Method that reads event area
         public EventArea ReadEventArea(int id)
         {
             return _eventAreaRepository.FindById(id);
         }
 
+        // Method that reads event
         public Event ReadEvent(int id)
         {
             return _eventRepository.FindById(id);
         }
 
+        // Method that reads venue
         public Venue ReadVenue(int id)
         {
             return _venueRepository.FindById(id);
         }
 
+        // Method that reads layout
         public Layout ReadLayout(int id)
         {
             return _layoutRepository.FindById(id);
         }
 
+        // Method that reads area
         public Area ReadArea(int id)
         {
             return _areaRepository.FindById(id);
         }
 
+        // Method that reads seat
         public Seat ReadSeat(int id)
         {
             return _seatRepository.FindById(id);
+        }
+
+        // Method that fills event repository with data from database
+        public void FillEventRepository()
+        {
+            _eventRepository.FillRepositoryWithSqlData();
+        }
+
+        // Method that fills event area repository with data from database
+        public void FillEventAreaRepository()
+        {
+            _eventAreaRepository.FillRepositoryWithSqlData();
+        }
+
+        // Method that fills event seat repository with data from database
+        public void FillEventSeatRepository()
+        {
+            _eventSeatRepository.FillRepositoryWithSqlData();
+        }
+
+        // Method that fills venue repository with data from database
+        public void FillVenueRepository()
+        {
+            _venueRepository.FillRepositoryWithSqlData();
+        }
+
+        // Method that fills layout repository with data from database
+        public void FillLayoutRepository()
+        {
+            _layoutRepository.FillRepositoryWithSqlData();
+        }
+
+        // Method that fills area repository with data from database
+        public void FillAreaRepository()
+        {
+            _areaRepository.FillRepositoryWithSqlData();
+        }
+
+        // Method that fills seat repository with data from database
+        public void FillSeatRepository()
+        {
+            _seatRepository.FillRepositoryWithSqlData();
         }
     }
 }
